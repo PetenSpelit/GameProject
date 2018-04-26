@@ -9,7 +9,9 @@ public class ItemDatabase : MonoBehaviour
     private Item cheese;
     private Item locknew;
 
-    // Use this for initialization
+    /// <summary>
+    /// Use this for initialization
+    /// </summary>
     void Start()
     {
         InitializeDatabase();

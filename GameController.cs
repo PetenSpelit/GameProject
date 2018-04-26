@@ -15,7 +15,9 @@ public class GameController : MonoBehaviour
     private Canvas InventoryCanvas;
     private ItemDatabase score;
 
-    // Use this for initialization, simple initialization.
+    /// <summary>
+    /// Use this for initialization, simple initialization.
+    /// </summary>    
     void Start()
     {
         inventoryList = FindObjectOfType(typeof(Player)) as Player;
@@ -31,28 +33,40 @@ public class GameController : MonoBehaviour
     }
 
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update is called once per frame
+    /// </summary>
     void Update()
     {
         //Keeps updating the inventory.
         inventoryList.Inventory();              
     }
-    //Toggles inventory canvas on/off by pressing a button.
+    /// <summary>
+    /// Toggles inventory on/off by pressing a button.
+    /// </summary>
     public void ShowInventory()             
     {
         ToggleCanvas();
     }
+    /// <summary>
+    /// Method for toggling the canvas (in this case it means inventory).
+    /// </summary>
     public void ToggleCanvas()              
     {
         //Toggle inventory canvas.
         InventoryCanvas.enabled = !InventoryCanvas.enabled;     
     }
+    /// <summary>
+    /// Method for changing scenes.
+    /// </summary>
     public void ChangeScene()
     {
-        Debug.Log("doorr");
         SceneManager.LoadScene("LockGame");
     }
-    //Shows picked up items in dialogue screen for 4 seconds.
+    /// <summary>
+    /// Shows picked up items in dialogue screen for 4 seconds.
+    /// </summary>
+    /// <param name="pickedItem"></param>
     public void PickedUpItem(GameObject pickedItem)     
     {
         ShowScore();
@@ -61,16 +75,30 @@ public class GameController : MonoBehaviour
         // 4 second delay.
         StartCoroutine(Delay(4));                       
     }
-    // Delay method, some kind of Unity magic.
+    /// <summary>
+    /// Delay method, some kind of Unity magic.
+    /// </summary>
+    /// <param name="sec"></param>
+    /// <returns></returns>
     IEnumerator Delay(float sec)                        
     {
         yield return new WaitForSeconds(sec);
         DialogueScreen.text = "";
     }
-    // Shows the item's score in the dialogue screen
+    /// <summary>
+    /// Shows the item's score in the dialogue screen
+    /// </summary>
     public void ShowScore()                             
     {
         scoreText.text = "Score: " + inventoryList.ReturnScore();
+    }
+    /// <summary>
+    /// Sets the renderer to FALSE, so the gameobject isn't visible anymore
+    /// </summary>
+    /// <param name="gameObject"></param>
+    public void HideItem(GameObject gameObject)
+    {
+        gameObject.GetComponent<Renderer>().enabled = false;
     }
 }
 

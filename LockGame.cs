@@ -20,9 +20,11 @@ public class LockGame : MonoBehaviour {
     public Button Timesup;
     private float starttime;
     public bool wait;
-    
 
-    // Use this for initialization
+
+    /// <summary>
+    /// Use this for initialization
+    /// </summary>
     void Start() {
         //Game objects are being configured
         TopRight = GameObject.Find("TopRight").GetComponent<Button>(); 
@@ -49,20 +51,24 @@ public class LockGame : MonoBehaviour {
         wait = false;
     }
 
-
-    // Update is called once per frame
+    /// <summary>
+    /// Update is called once per frame
+    /// </summary>
     void Update()
     {
-        //minuses one from timer every second.
+        //Decreases one second from timer every second.
         starttime -= Time.deltaTime;
-        //changes timers text accordingly
+        //Changes timers text accordingly
         Timer.text = "Time left " + Mathf.Round(starttime); 
         Time.timeScale = 0;
-        //checks if this method needs to be called
+        //Checks if this method needs to be called
         RestartScene(starttime); 
         
     }
-    // Restart checks if timer value is 0, it sets Timesup button active.
+    /// <summary>
+    /// Restart checks if timer value is 0, it sets Timesup button active.
+    /// </summary>
+    /// <param name="starttime"></param>
     public void RestartScene(float starttime)
     {
         if (starttime <= 0)
@@ -83,7 +89,10 @@ public class LockGame : MonoBehaviour {
             wait = false;
         }
     }
-    //This method checks which button is being pressed and it gives instructions to Unity how to move the game object 
+    /// <summary>
+    /// This method checks which button is being pressed and it gives instructions to Unity how to move the game object.
+    /// </summary>
+    /// <param name="butt"></param>
     public void ButtonPressed(Button butt)
     {
         //rotates locks 1 & 2 at the same time
@@ -129,9 +138,12 @@ public class LockGame : MonoBehaviour {
         //This method is called after every pressed button
         CheckRotation(); 
     }
-    //Checks if every lock is rotated as wished. If all conditions are true, new scene is loaded 
+    /// <summary>
+    /// Checks if every lock is rotated to 0 degrees. If all conditions are true, new scene is loaded.
+    /// </summary>    
     void CheckRotation()
     {
+        // Values need to be forced to int, because Unity gives some random decimals near 0.
         if ((int)lock1.transform.rotation.eulerAngles.z == 0 && (int)lock2.transform.rotation.eulerAngles.z == 0 && (int)lock3.transform.rotation.eulerAngles.z == 0)
         {
             SceneManager.LoadScene(0);

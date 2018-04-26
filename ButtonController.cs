@@ -8,17 +8,25 @@ public class ButtonController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     private bool buttonPressed;
 
-    //button is pressed
+    /// <summary>
+    /// Button is pressed
+    /// </summary>
+    /// <param name="b"></param>
     public void OnPointerDown(PointerEventData b)       
     {
         buttonPressed = true;
     }
-    //button isn't pressed
+    /// <summary>
+    /// Button isn't pressed (anymore)
+    /// </summary>
+    /// <param name="b"></param>
     public void OnPointerUp(PointerEventData b)         
     {
         buttonPressed = false;
     }
-    //returns boolean for button presses
+    /// <summary>
+    /// Returns boolean for button presses
+    /// </summary>
     public bool ButtonPressed                           
     {
         get
