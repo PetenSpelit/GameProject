@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     private ItemDatabase item;
     private int score = 0;
     private NPC npc;
+    public static int staticScore = 0;
 
     /// <summary>
     /// Use this for initialization, initialize everything here.
@@ -54,7 +55,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Stop();
+           Stop();
         }
     }
     /// <summary>
@@ -175,6 +176,7 @@ public class Player : MonoBehaviour
         {
             score = score + item.GetScore(temp);
         }
+        staticScore = score;
         return score;
     }
 

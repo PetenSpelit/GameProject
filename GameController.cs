@@ -72,7 +72,7 @@ public class GameController : MonoBehaviour
         DialogueScreen.text = "";
         DialogueScreen.text = "Picked up " + pickedItem.name;
         // 4 second delay.
-        StartCoroutine(Delay(3));                       
+        StartCoroutine(Delay(2));                       
     }
     /// <summary>
     /// Delay method, some kind of Unity magic.
