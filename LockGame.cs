@@ -17,9 +17,9 @@ public class LockGame : MonoBehaviour {
     private Button BottomRight;
     private Button BottomLeft;
     private Text Timer;
-    public Button Timesup;
+    private Button Timesup;
     private float starttime;
-    public bool wait;
+    private bool wait;
 
 
     /// <summary>
@@ -132,7 +132,7 @@ public class LockGame : MonoBehaviour {
             if (wait == true)
             {
                 Time.timeScale = 1;
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene("LockGame");
             }
         }
         //This method is called after every pressed button
@@ -146,7 +146,8 @@ public class LockGame : MonoBehaviour {
         // Values need to be forced to int, because Unity gives some random decimals near 0.
         if ((int)lock1.transform.rotation.eulerAngles.z == 0 && (int)lock2.transform.rotation.eulerAngles.z == 0 && (int)lock3.transform.rotation.eulerAngles.z == 0)
         {
-            SceneManager.LoadScene(0);
+            // Not using ChangeScene() method here because of null reference errors, it is one line of code anyway.
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }

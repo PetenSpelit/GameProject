@@ -6,8 +6,10 @@ public class ItemDatabase : MonoBehaviour
 {
     private int score = 0;
     private List<Item> database;
-    private Item cheese;
-    private Item locknew;
+    private Item horseshoe;
+    private Item key;
+    private Item carrot;
+    private Item beanie;
 
     /// <summary>
     /// Use this for initialization
@@ -66,10 +68,14 @@ public class ItemDatabase : MonoBehaviour
     private void InitializeDatabase()
     {
         this.database = new List<Item>();
-        this.cheese = new Item("Cheese", 50);
-        this.locknew = new Item("LockNew", 30);
-        database.Add(cheese);
-        database.Add(locknew);
+        this.horseshoe = new Item("Horseshoe", 50);
+        this.key = new Item("Key", 30);
+        this.carrot = new Item("Carrot", 20);
+        this.beanie = new Item("Beanie", 60);
+        database.Add(horseshoe);
+        database.Add(key);
+        database.Add(carrot);
+        database.Add(beanie);
     }
 
 }

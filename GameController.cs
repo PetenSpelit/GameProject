@@ -13,7 +13,6 @@ public class GameController : MonoBehaviour
     private Player inventoryList;
     private Button inventory;
     private Canvas InventoryCanvas;
-    private ItemDatabase score;
 
     /// <summary>
     /// Use this for initialization, simple initialization.
@@ -21,14 +20,13 @@ public class GameController : MonoBehaviour
     void Start()
     {
         inventoryList = FindObjectOfType(typeof(Player)) as Player;
-        InventoryCanvas = GameObject.Find("InventoryCanvas").GetComponent<Canvas>();
-        inventory = GameObject.Find("Inventory").GetComponent<Button>();
+        inventory = GameObject.Find("InventoryButton").GetComponent<Button>();
         //For the inventory button.
         inventory.onClick.AddListener(() => ShowInventory());
-        //Makes the "inventory canvas" invisible @start.
-        InventoryCanvas.enabled = false;                    
+        InventoryCanvas = GameObject.Find("InventoryCanvas").GetComponent<Canvas>();
+        InventoryCanvas.enabled = false;
+        //Makes the "inventory canvas" invisible @start.                    
         DialogueScreen = GameObject.Find("Dialogue").GetComponent<Text>();
-        score = FindObjectOfType(typeof(ItemDatabase)) as ItemDatabase;
         scoreText = GameObject.Find("Score").GetComponent<Text>();
     }
 
@@ -61,7 +59,8 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void ChangeScene()
     {
-        SceneManager.LoadScene("LockGame");
+        //Loads the next scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     /// <summary>
     /// Shows picked up items in dialogue screen for 4 seconds.
@@ -73,7 +72,7 @@ public class GameController : MonoBehaviour
         DialogueScreen.text = "";
         DialogueScreen.text = "Picked up " + pickedItem.name;
         // 4 second delay.
-        StartCoroutine(Delay(4));                       
+        StartCoroutine(Delay(3));                       
     }
     /// <summary>
     /// Delay method, some kind of Unity magic.
@@ -98,7 +97,7 @@ public class GameController : MonoBehaviour
     /// <param name="gameObject"></param>
     public void HideItem(GameObject gameObject)
     {
-        gameObject.GetComponent<Renderer>().enabled = false;
+        gameObject.SetActive(false);
     }
 }
 

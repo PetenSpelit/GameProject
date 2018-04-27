@@ -55,7 +55,6 @@ public class Player : MonoBehaviour
         else
         {
             Stop();
-            npc.StartDialogue();
         }
     }
     /// <summary>
@@ -130,10 +129,19 @@ public class Player : MonoBehaviour
             //Hides the item after it is picked up
             gamecontroller.HideItem(collision.gameObject);
         }
-        //Changes the scene when encountering a door
+        //changes the scene when encountering a door
         if (collision.gameObject.CompareTag("Door"))                 
         {
-            gamecontroller.ChangeScene();
+            foreach (GameObject temp in inventory)
+            {
+                if(temp != null)
+                {
+                    if (temp.name == "Key")
+                    {
+                        gamecontroller.ChangeScene();
+                    }
+                }
+            }
         }
         //Starts dialogue with NPC when encountering one
         if (collision.gameObject.CompareTag("NPC"))
