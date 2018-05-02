@@ -13,6 +13,8 @@ public class GameController : MonoBehaviour
     private Player inventoryList;
     private Button inventory;
     private Canvas InventoryCanvas;
+    private Image textbg;
+    
 
     /// <summary>
     /// Use this for initialization, simple initialization.
@@ -28,6 +30,7 @@ public class GameController : MonoBehaviour
         //Makes the "inventory canvas" invisible @start.                    
         DialogueScreen = GameObject.Find("Dialogue").GetComponent<Text>();
         scoreText = GameObject.Find("Score").GetComponent<Text>();
+        textbg = GameObject.Find("TextBG").GetComponent<Image>();
     }
 
 
@@ -37,22 +40,25 @@ public class GameController : MonoBehaviour
     void Update()
     {
         //Keeps updating the inventory.
-        inventoryList.Inventory();              
+
+        HideTextScreen();
+        inventoryList.Inventory();
+
     }
     /// <summary>
     /// Toggles inventory on/off by pressing a button.
     /// </summary>
-    public void ShowInventory()             
+    public void ShowInventory()
     {
         ToggleCanvas();
     }
     /// <summary>
     /// Method for toggling the canvas (in this case it means inventory).
     /// </summary>
-    public void ToggleCanvas()              
+    public void ToggleCanvas()
     {
         //Toggle inventory canvas.
-        InventoryCanvas.enabled = !InventoryCanvas.enabled;     
+        InventoryCanvas.enabled = !InventoryCanvas.enabled;
     }
     /// <summary>
     /// Method for changing scenes.
@@ -66,20 +72,20 @@ public class GameController : MonoBehaviour
     /// Shows picked up items in dialogue screen for 4 seconds.
     /// </summary>
     /// <param name="pickedItem"></param>
-    public void PickedUpItem(GameObject pickedItem)     
+    public void PickedUpItem(GameObject pickedItem)
     {
         ShowScore();
         DialogueScreen.text = "";
         DialogueScreen.text = "Picked up " + pickedItem.name;
         // 4 second delay.
-        StartCoroutine(Delay(2));                       
+        StartCoroutine(Delay(2));
     }
     /// <summary>
     /// Delay method, some kind of Unity magic.
     /// </summary>
     /// <param name="sec"></param>
     /// <returns></returns>
-    IEnumerator Delay(float sec)                        
+    IEnumerator Delay(float sec)
     {
         yield return new WaitForSeconds(sec);
         DialogueScreen.text = "";
@@ -87,7 +93,7 @@ public class GameController : MonoBehaviour
     /// <summary>
     /// Shows the item's score in the dialogue screen
     /// </summary>
-    public void ShowScore()                             
+    public void ShowScore()
     {
         scoreText.text = "Score: " + inventoryList.ReturnScore();
     }
@@ -98,6 +104,23 @@ public class GameController : MonoBehaviour
     public void HideItem(GameObject gameObject)
     {
         gameObject.SetActive(false);
+    }
+    public void HideTextScreen()
+    {
+        if (SceneManager.GetActiveScene().buildIndex == 1 && textbg.enabled)
+        {
+            if(Input.GetKey(KeyCode.Return))
+            {
+                textbg.gameObject.SetActive(false);
+            }
+        }
+        if (SceneManager.GetActiveScene().buildIndex == 5 && textbg.enabled)
+        {
+            if (Input.GetKey(KeyCode.Return))
+            {
+                textbg.gameObject.SetActive(false);
+            }
+        }
     }
 }
 

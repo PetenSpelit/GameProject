@@ -20,7 +20,7 @@ public class Dialogue : MonoBehaviour
     /// </summary>
     void Start()
     {
-        player = FindObjectOfType(typeof(Player)) as Player;
+        player = FindObjectOfType<Player>();
         npc = FindObjectOfType(typeof(NPC)) as NPC;
 
         if (textFile != null)
@@ -60,5 +60,13 @@ public class Dialogue : MonoBehaviour
     {
         theText.text = "Press enter to start conversation.";
         StartCoroutine(Wait());
+    }
+    public void DumpText()
+    {
+        theText.text = "";
+        foreach (string texts in textLines)
+        {
+            theText.text += texts + "\n";
+        }
     }
 }

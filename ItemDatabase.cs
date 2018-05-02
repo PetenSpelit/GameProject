@@ -10,6 +10,7 @@ public class ItemDatabase : MonoBehaviour
     private Item key;
     private Item carrot;
     private Item beanie;
+    private Item crystal;
 
     /// <summary>
     /// Use this for initialization
@@ -72,10 +73,12 @@ public class ItemDatabase : MonoBehaviour
         this.key = new Item("Key", 30);
         this.carrot = new Item("Carrot", 20);
         this.beanie = new Item("Beanie", 60);
+        this.crystal = new Item("Crystal", 150);
         database.Add(horseshoe);
         database.Add(key);
         database.Add(carrot);
         database.Add(beanie);
+        database.Add(crystal);
     }
 
 }
