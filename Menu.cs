@@ -20,25 +20,37 @@ public class Menu : MonoBehaviour {
     {
         Button();
     }
-
+    /// <summary>
+    /// Method for the buttons.
+    /// </summary>
     public void Button()
     {
         if (start.ButtonPressed)
         {
-            StartGame();
+            StartCoroutine(Delay(2));
         }
         if (quit.ButtonPressed)
         {
             EndGame();
         }
     }
-
+    /// <summary>
+    /// Starts the game.
+    /// </summary>
     public void StartGame()
     {
         SceneManager.LoadScene(1);
     }
+    /// <summary>
+    /// Quits the game.
+    /// </summary>
     public void EndGame()
     {
         Application.Quit();
+    }
+    IEnumerator Delay(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        StartGame();
     }
 }

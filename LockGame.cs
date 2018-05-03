@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class LockGame : MonoBehaviour
 {
-
+    private Button Back;
     private GameObject lock1;
     private GameObject lock2;
     private GameObject lock3;
@@ -29,6 +29,7 @@ public class LockGame : MonoBehaviour
     private bool textbgenabled = true;
     private Dialogue dialogue;
     private bool antispam = true;
+    private bool antispam2 = false;
 
     /// <summary>
     /// Use this for initialization
@@ -46,6 +47,7 @@ public class LockGame : MonoBehaviour
         BottomLeft2 = GameObject.Find("BottomLeft2").GetComponent<Button>();
         Timer = GameObject.Find("Timer").GetComponent<Text>();
         restart = GameObject.Find("RestartGame").GetComponent<Button>();
+        Back = GameObject.Find("Back").GetComponent<Button>();
         lock1 = GameObject.Find("LockNew1");
         lock2 = GameObject.Find("LockNew2");
         lock3 = GameObject.Find("LockNew3");
@@ -62,6 +64,7 @@ public class LockGame : MonoBehaviour
         BottomRight2.onClick.AddListener(() => ButtonPressed(BottomRight2));
         BottomLeft2.onClick.AddListener(() => ButtonPressed(BottomLeft2));
         restart.onClick.AddListener(() => ButtonPressed(restart));
+        Back.onClick.AddListener(() => ButtonPressed(Back));
         score = Player.staticScore;
         //Sets time for timer by dividing the score by 10.
         rand = Random.Range(0, 5);
@@ -208,6 +211,10 @@ public class LockGame : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
+        if (butt == Back)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        }
         //This method is called after every pressed button
         CheckRotation();
 
@@ -230,40 +237,50 @@ public class LockGame : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
+    /// <summary>
+    /// Hides the text screen on different scenes.
+    /// </summary>
     public void HideTextScreen()
     {
         if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            if (Input.GetKeyDown(KeyCode.Return) && textbg.gameObject.activeSelf)
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButton(0) && textbg.gameObject.activeSelf)
             {
-                if(!textbgenabled)
+                StartCoroutine(DelayThree(2));
+                if (!textbgenabled && antispam)
                 {
                     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
                 }
                 if (textbgenabled)
                 {
-                    textbg.gameObject.SetActive(false);
-                    starttime = 6f;
-                    textbgenabled = false;
+                    StartCoroutine(Delay(2));
                 }
             }
         }
-        if (SceneManager.GetActiveScene().buildIndex == 4)
+        if (SceneManager.GetActiveScene().buildIndex == 4 || SceneManager.GetActiveScene().buildIndex == 6)
         {
-            if (Input.GetKeyDown(KeyCode.Return) && textbg.gameObject.activeSelf)
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButton(0) && textbg.gameObject.activeSelf)
             {
-                textbg.gameObject.SetActive(false);
-                starttime = score / 10;
-            }
-        }
-        if (SceneManager.GetActiveScene().buildIndex == 6)
-        {
-            if (Input.GetKeyDown(KeyCode.Return) && textbg.gameObject.activeSelf)
-            {
-                textbg.gameObject.SetActive(false);
-                starttime = score / 10;
+                StartCoroutine(DelayTwo(2));
             }
         }
     }
-
+    IEnumerator Delay(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        textbg.gameObject.SetActive(false);
+        starttime = 6f;
+        textbgenabled = false;
+    }
+    IEnumerator DelayTwo(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        textbg.gameObject.SetActive(false);
+        starttime = score / 10;
+    }
+    IEnumerator DelayThree(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        antispam2 = true;
+    }
 }

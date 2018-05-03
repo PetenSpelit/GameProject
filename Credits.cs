@@ -15,11 +15,10 @@ public class Credits : MonoBehaviour {
         endtrigger = GameObject.Find("EndTrigger").GetComponent<Text>();
     }
 
-    void Update()
-    {
-        
-    }
-
+    /// <summary>
+    /// Just a collider to stop the credits.
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("End"))

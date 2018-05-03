@@ -105,22 +105,23 @@ public class GameController : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+    /// <summary>
+    /// Hides the text screen. 
+    /// </summary>
     public void HideTextScreen()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 1 && textbg.enabled)
+        if ((SceneManager.GetActiveScene().buildIndex == 1 || SceneManager.GetActiveScene().buildIndex == 5) && textbg.enabled)
         {
-            if(Input.GetKey(KeyCode.Return))
+            if(Input.GetKey(KeyCode.Return) || Input.GetMouseButton(0))
             {
-                textbg.gameObject.SetActive(false);
+                StartCoroutine(DelayTwo(2));
             }
         }
-        if (SceneManager.GetActiveScene().buildIndex == 5 && textbg.enabled)
-        {
-            if (Input.GetKey(KeyCode.Return))
-            {
-                textbg.gameObject.SetActive(false);
-            }
-        }
+    }
+    IEnumerator DelayTwo(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        textbg.gameObject.SetActive(false);
     }
 }
 

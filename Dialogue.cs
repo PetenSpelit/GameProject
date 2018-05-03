@@ -40,7 +40,7 @@ public class Dialogue : MonoBehaviour
     {
         foreach(string texts in textLines)
         {
-            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Return));
+            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButton(0));
             theText.text = textLines[currentLine];
             currentLine += 1;
             if (currentLine > endAtLine)
@@ -61,6 +61,9 @@ public class Dialogue : MonoBehaviour
         theText.text = "Press enter to start conversation.";
         StartCoroutine(Wait());
     }
+    /// <summary>
+    /// Clears the text screen and puts a new .txt file to it.
+    /// </summary>
     public void DumpText()
     {
         theText.text = "";
