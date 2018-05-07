@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+    //[SerializeField] shows the variable in Unity inspector, even when the variable is private.
     private GameController gamecontroller;
     private Vector2 direction;
     [SerializeField]
@@ -20,8 +21,12 @@ public class Player : MonoBehaviour
     private GameObject[] inventory;
     private ItemDatabase item;
     private int score = 0;
+    private NPC npc;
+    public static int staticScore = 0;
 
-    // Use this for initialization, initialize everything here.
+    /// <summary>
+    /// Use this for initialization, initialize everything here.
+    /// </summary>
     void Start()
     {
         inventory = new GameObject[10];
@@ -33,21 +38,43 @@ public class Player : MonoBehaviour
         inventoryList = GameObject.Find("InventoryList").GetComponent<Text>();
         gamecontroller = FindObjectOfType(typeof(GameController)) as GameController;
         item = FindObjectOfType(typeof(ItemDatabase)) as ItemDatabase;
+        npc = FindObjectOfType(typeof(NPC)) as NPC;
     }
 
-    // Update is called once per frame
-    //Updates movement
+    /// <summary>
+    /// Updates movement
+    /// Update is called once per frame
+    /// </summary>
     void Update()
     {
-        MovementKeys();     
-        Move();
+        // If InDiscussion() is false, player can move. When dialogue starts player cannot move anymore.
+        if(!npc.InDiscussion())
+        {
+            MovementKeys();
+            Move();
+        }
+        else
+        {
+           Stop();
+        }
     }
-    //Sets the player's speed for movement
+    /// <summary>
+    /// Sets the player's speed for movement
+    /// </summary>
     public void Move()      
     {
         body.velocity = direction * speed;
     }
-    //Movement keys and buttons for different directions.
+    /// <summary>
+    /// Sets the player's speed to 0
+    /// </summary>
+    public void Stop()
+    {
+        body.velocity = direction * 0;
+    }
+    /// <summary>
+    /// Movement keys and buttons for different directions.
+    /// </summary>
     public void MovementKeys()      
     {
         //Without this line, speed would increase constantly.
@@ -71,7 +98,10 @@ public class Player : MonoBehaviour
         }
 
     }
-    //Adds an item to next empty slot in the inventory array.
+    /// <summary>
+    /// Adds an item to next empty slot in the inventory array.
+    /// </summary>
+    /// <param name="pickItem"></param>
     public void AddToInventory(GameObject pickItem)   
     {                                                 
         for (int i = 0; i < inventory.Length; i++)
@@ -83,24 +113,46 @@ public class Player : MonoBehaviour
             }
         }
     }
-    //"Picks up" the items with collision.
+    /// <summary>
+    /// Does different things when player collides with gameObjects.
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnTriggerEnter2D(Collider2D collision)       
     {
         //When player hits the "Item" tag, gameobject tagged with "Item" gets picked up.
         if (collision.gameObject.CompareTag("Item"))    
         {
             AddToInventory(collision.gameObject);
+            //Gets the score of the item that is picked up
             item.GetScore(collision.gameObject);
-            //shows the name of the item that was picked up
-            gamecontroller.PickedUpItem(collision.gameObject);         
+            //Shows the name of the item that is picked up
+            gamecontroller.PickedUpItem(collision.gameObject);
+            //Hides the item after it is picked up
+            gamecontroller.HideItem(collision.gameObject);
         }
         //changes the scene when encountering a door
         if (collision.gameObject.CompareTag("Door"))                 
         {
-            gamecontroller.ChangeScene();
+            foreach (GameObject temp in inventory)
+            {
+                if(temp != null)
+                {
+                    if (temp.name == "Key")
+                    {
+                        gamecontroller.ChangeScene();
+                    }
+                }
+            }
+        }
+        //Starts dialogue with NPC when encountering one
+        if (collision.gameObject.CompareTag("NPC"))
+        {
+            npc.StartDialogue();
         }
     }
-    //Prints the contents of the inventory to a Text object.
+    /// <summary>
+    /// Prints the contents of the inventory to a Text object.
+    /// </summary>
     public void Inventory()                     
     {
         inventoryList.text = "Inventory:\n";
@@ -124,6 +176,7 @@ public class Player : MonoBehaviour
         {
             score = score + item.GetScore(temp);
         }
+        staticScore = score;
         return score;
     }
 

@@ -13,64 +13,112 @@ public class GameController : MonoBehaviour
     private Player inventoryList;
     private Button inventory;
     private Canvas InventoryCanvas;
-    private ItemDatabase score;
+    private Image textbg;
+    private ButtonController Enter;
+    
 
-    // Use this for initialization, simple initialization.
+    /// <summary>
+    /// Use this for initialization, simple initialization.
+    /// </summary>    
     void Start()
     {
         inventoryList = FindObjectOfType(typeof(Player)) as Player;
-        InventoryCanvas = GameObject.Find("InventoryCanvas").GetComponent<Canvas>();
-        inventory = GameObject.Find("Inventory").GetComponent<Button>();
+        inventory = GameObject.Find("InventoryButton").GetComponent<Button>();
         //For the inventory button.
         inventory.onClick.AddListener(() => ShowInventory());
-        //Makes the "inventory canvas" invisible @start.
-        InventoryCanvas.enabled = false;                    
+        InventoryCanvas = GameObject.Find("InventoryCanvas").GetComponent<Canvas>();
+        InventoryCanvas.enabled = false;
+        //Makes the "inventory canvas" invisible @start.                    
         DialogueScreen = GameObject.Find("Dialogue").GetComponent<Text>();
-        score = FindObjectOfType(typeof(ItemDatabase)) as ItemDatabase;
         scoreText = GameObject.Find("Score").GetComponent<Text>();
+        textbg = GameObject.Find("TextBG").GetComponent<Image>();
+        Enter = GameObject.Find("Enter").GetComponent<ButtonController>();
     }
 
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update is called once per frame
+    /// </summary>
     void Update()
     {
         //Keeps updating the inventory.
-        inventoryList.Inventory();              
+
+        HideTextScreen();
+        inventoryList.Inventory();
+
     }
-    //Toggles inventory canvas on/off by pressing a button.
-    public void ShowInventory()             
+    /// <summary>
+    /// Toggles inventory on/off by pressing a button.
+    /// </summary>
+    public void ShowInventory()
     {
         ToggleCanvas();
     }
-    public void ToggleCanvas()              
+    /// <summary>
+    /// Method for toggling the canvas (in this case it means inventory).
+    /// </summary>
+    public void ToggleCanvas()
     {
         //Toggle inventory canvas.
-        InventoryCanvas.enabled = !InventoryCanvas.enabled;     
+        InventoryCanvas.enabled = !InventoryCanvas.enabled;
     }
+    /// <summary>
+    /// Method for changing scenes.
+    /// </summary>
     public void ChangeScene()
     {
-        Debug.Log("doorr");
-        SceneManager.LoadScene("LockGame");
+        //Loads the next scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
-    //Shows picked up items in dialogue screen for 4 seconds.
-    public void PickedUpItem(GameObject pickedItem)     
+    /// <summary>
+    /// Shows picked up items in dialogue screen for 4 seconds.
+    /// </summary>
+    /// <param name="pickedItem"></param>
+    public void PickedUpItem(GameObject pickedItem)
     {
         ShowScore();
         DialogueScreen.text = "";
         DialogueScreen.text = "Picked up " + pickedItem.name;
         // 4 second delay.
-        StartCoroutine(Delay(4));                       
+        StartCoroutine(Delay(2));
     }
-    // Delay method, some kind of Unity magic.
-    IEnumerator Delay(float sec)                        
+    /// <summary>
+    /// Delay method, some kind of Unity magic.
+    /// </summary>
+    /// <param name="sec"></param>
+    /// <returns></returns>
+    IEnumerator Delay(float sec)
     {
         yield return new WaitForSeconds(sec);
         DialogueScreen.text = "";
     }
-    // Shows the item's score in the dialogue screen
-    public void ShowScore()                             
+    /// <summary>
+    /// Shows the item's score in the dialogue screen
+    /// </summary>
+    public void ShowScore()
     {
         scoreText.text = "Score: " + inventoryList.ReturnScore();
+    }
+    /// <summary>
+    /// Sets the renderer to FALSE, so the gameobject isn't visible anymore
+    /// </summary>
+    /// <param name="gameObject"></param>
+    public void HideItem(GameObject gameObject)
+    {
+        gameObject.SetActive(false);
+    }
+    /// <summary>
+    /// Hides the text screen. 
+    /// </summary>
+    public void HideTextScreen()
+    {
+        if ((SceneManager.GetActiveScene().buildIndex == 1 || SceneManager.GetActiveScene().buildIndex == 5) && textbg.enabled)
+        {
+            if(Input.GetKey(KeyCode.Return) || Enter.ButtonPressed)
+            {
+                textbg.gameObject.SetActive(false);
+            }
+        }
     }
 }
 
